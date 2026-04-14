@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="books.xsl"?>
+<catalog>
+    <book id="1">
+        <title>The Great Gatsby</title>
+        <author>F. Scott Fitzgerald</author>
+        <price currency="USD">10.99</price>
+        <year>1925</year>
+        <genre>Fiction</genre>
+        <pages>180</pages>
+    </book>
+    
+    <book id="2">
+        <title>To Kill a Mockingbird</title>
+        <author>Harper Lee</author>
+        <price currency="USD">12.99</price>
+        <year>1960</year>
+        <genre>Fiction</genre>
+        <pages>281</pages>
+    </book>
+    
+    <book id="3">
+        <title>1984</title>
+        <author>George Orwell</author>
+        <price currency="USD">13.99</price>
+        <year>1949</year>
+        <genre>Dystopian</genre>
+        <pages>328</pages>
+    </book>
+    
+    <book id="4">
+        <title>Pride and Prejudice</title>
+        <author>Jane Austen</author>
+        <price currency="USD">9.99</price>
+        <year>1813</year>
+        <genre>Romance</genre>
+        <pages>432</pages>
+    </book>
+    
+    <book id="5">
+        <title>The Catcher in the Rye</title>
+        <author>J.D. Salinger</author>
+        <price currency="USD">11.99</price>
+        <year>1951</year>
+        <genre>Fiction</genre>
+        <pages>277</pages>
+    </book>
+    
+    <book id="6">
+        <title>Brave New World</title>
+        <author>Aldous Huxley</author>
+        <price currency="USD">14.99</price>
+        <year>1932</year>
+        <genre>Dystopian</genre>
+        <pages>311</pages>
+    </book>
+    
+    <book id="7">
+        <title>The Hobbit</title>
+        <author>J.R.R. Tolkien</author>
+        <price currency="USD">15.99</price>
+        <year>1937</year>
+        <genre>Fantasy</genre>
+        <pages>310</pages>
+    </book>
+    
+    <book id="8">
+        <title>Jane Eyre</title>
+        <author>Charlotte Brontë</author>
+        <price currency="USD">11.99</price>
+        <year>1847</year>
+        <genre>Romance</genre>
+        <pages>507</pages>
+    </book>
+    
+    <book id="9">
+        <title>Wuthering Heights</title>
+        <author>Emily Brontë</author>
+        <price currency="USD">10.99</price>
+        <year>1847</year>
+        <genre>Romance</genre>
+        <pages>323</pages>
+    </book>
+    
+    <book id="10">
+        <title>Moby-Dick</title>
+        <author>Herman Melville</author>
+        <price currency="USD">12.99</price>
+        <year>1851</year>
+        <genre>Adventure</genre>
+        <pages>635</pages>
+    </book>
+</catalog>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XML + XSLT Book Catalog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .info-banner {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-banner h2 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .info-banner p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .info-banner code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e74c3c;
+        }
+
+        .link-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .link-box a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        .link-box a:hover {
+            text-decoration: underline;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 12px 20px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #333;
+        }
+
+        .tab-button:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .code-block .tag {
+            color: #569cd6;
+        }
+
+        .code-block .attr {
+            color: #9cdcfe;
+        }
+
+        .code-block .string {
+            color: #ce9178;
+        }
+
+        .code-block .comment {
+            color: #6a9955;
+        }
+
+        .transform-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .transform-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        #transformedOutput {
+            background: #f7f7f7;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .feature-list {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-list h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .feature-list ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .feature-list li {
+            color: #666;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        .feature-list li:before {
+            content: "✓ ";
+            color: #48bb78;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="info-banner">
+            <h2>📚 XML + XSLT Demonstration</h2>
+            <p>
+                This page demonstrates the integration of XML (eXtensible Markup Language) and XSLT 
+                (eXtensible Stylesheet Language Transformations). XML provides structured data, while XSLT 
+                transforms that data into formatted HTML for display.
+            </p>
+            <div class="link-box">
+                <strong>Quick Links:</strong><br/>
+                <a href="books.xml" target="_blank">📄 View Raw XML</a>
+                <a href="books.xml" download>💾 Download XML</a>
+            </div>
+        </div>
+
+        <div class="feature-list">
+            <h3>✨ Key Features</h3>
+            <ul>
+                <li><strong>Structured Data:</strong> 10 classic books with title, author, price, year, genre, and page count</li>
+                <li><strong>XSLT Transformation:</strong> Converts XML to beautifully formatted HTML table</li>
+                <li><strong>Client-side Processing:</strong> JavaScript XSLT transformation in the browser</li>
+                <li><strong>Server-side Display:</strong> Open books.xml directly in browser to see automatic XSLT rendering</li>
+                <li><strong>Sorting:</strong> XSLT sorts books alphabetically by title</li>
+                <li><strong>Styling:</strong> Responsive design with modern UI</li>
+            </ul>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('view')">📊 View Transformed Data</button>
+            <button class="tab-button" onclick="switchTab('xml')">📄 XML Source</button>
+            <button class="tab-button" onclick="switchTab('xslt')">🎨 XSLT Template</button>
+        </div>
+
+        <div id="view" class="tab-content active">
+            <div class="transform-section">
+                <h3>Transformed HTML Table (Client-side XSLT)</h3>
+                <div id="transformedOutput">
+                    <p style="text-align: center; color: #999; padding: 20px;">Loading transformed content...</p>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="transformXML()">🔄 Refresh Transform</button>
+                    <a href="books.xml" class="btn btn-secondary" target="_blank">📄 View Direct XML</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="xml" class="tab-content">
+            <div class="code-block">
+<pre>&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;
+&lt;?xml-stylesheet type=<span class="string">"text/xsl"</span> href=<span class="string">"books.xsl"</span>?&gt;
+&lt;<span class="tag">catalog</span>&gt;
+    &lt;<span class="tag">book</span> <span class="attr">id</span>=<span class="string">"1"</span>&gt;
+        &lt;<span class="tag">title</span>&gt;The Great Gatsby&lt;/<span class="tag">title</span>&gt;
+        &lt;<span class="tag">author</span>&gt;F. Scott Fitzgerald&lt;/<span class="tag">author</span>&gt;
+        &lt;<span class="tag">price</span> <span class="attr">currency</span>=<span class="string">"USD"</span>&gt;10.99&lt;/<span class="tag">price</span>&gt;
+        &lt;<span class="tag">year</span>&gt;1925&lt;/<span class="tag">year</span>&gt;
+        &lt;<span class="tag">genre</span>&gt;Fiction&lt;/<span class="tag">genre</span>&gt;
+        &lt;<span class="tag">pages</span>&gt;180&lt;/<span class="tag">pages</span>&gt;
+    &lt;/<span class="tag">book</span>&gt;
+    <span class="comment">&lt;!-- More books... --&gt;</span>
+&lt;/<span class="tag">catalog</span>&gt;</pre>
+            </div>
+        </div>
+
+        <div id="xslt" class="tab-content">
+            <div class="code-block">
+<pre>&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;
+&lt;<span class="tag">xsl:stylesheet</span> <span class="attr">version</span>=<span class="string">"1.0"</span>&gt;
+    &lt;<span class="tag">xsl:template</span> <span class="attr">match</span>=<span class="string">"/"</span>&gt;
+        &lt;<span class="tag">html</span>&gt;
+            &lt;<span class="tag">head</span>&gt;
+                &lt;<span class="tag">title</span>&gt;Book Catalog&lt;/<span class="tag">title</span>&gt;
+                &lt;<span class="tag">style</span>&gt;/* CSS styling */&lt;/<span class="tag">style</span>&gt;
+            &lt;/<span class="tag">head</span>&gt;
+            &lt;<span class="tag">body</span>&gt;
+                &lt;<span class="tag">table</span>&gt;
+                    &lt;<span class="tag">xsl:for-each</span> <span class="attr">select</span>=<span class="string">"//book"</span>&gt;
+                        &lt;<span class="tag">tr</span>&gt;
+                            &lt;<span class="tag">td</span>&gt;
+                                &lt;<span class="tag">xsl:value-of</span> <span class="attr">select</span>=<span class="string">"title"</span>/&gt;
+                            &lt;/<span class="tag">td</span>&gt;
+                            &lt;<span class="tag">td</span>&gt;
+                                &lt;<span class="tag">xsl:value-of</span> <span class="attr">select</span>=<span class="string">"author"</span>/&gt;
+                            &lt;/<span class="tag">td</span>&gt;
+                            &lt;<span class="tag">td</span>&gt;
+                                &lt;<span class="tag">xsl:value-of</span> <span class="attr">select</span>=<span class="string">"price"</span>/&gt;
+                            &lt;/<span class="tag">td</span>&gt;
+                        &lt;/<span class="tag">tr</span>&gt;
+                    &lt;/<span class="tag">xsl:for-each</span>&gt;
+                &lt;/<span class="tag">table</span>&gt;
+            &lt;/<span class="tag">body</span>&gt;
+        &lt;/<span class="tag">html</span>&gt;
+    &lt;/<span class="tag">xsl:template</span>&gt;
+&lt;/<span class="tag">xsl:stylesheet</span>&gt;</pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Switch between tabs
+        function switchTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from buttons
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+
+            // Transform if viewing tab is clicked
+            if (tabName === 'view') {
+                transformXML();
+            }
+        }
+
+        // Transform XML using XSLT (Client-side)
+        function transformXML() {
+            const xmlFile = 'books.xml';
+            const xslFile = 'books.xsl';
+            const output = document.getElementById('transformedOutput');
+
+            // Create XMLHttpRequest objects for XML and XSLT
+            const xmlRequest = new XMLHttpRequest();
+            const xslRequest = new XMLHttpRequest();
+
+            xmlRequest.onload = function() {
+                xslRequest.onload = function() {
+                    try {
+                        const xmlDoc = xmlRequest.responseXML;
+                        const xslDoc = xslRequest.responseXML;
+
+                        // Check if both files loaded successfully
+                        if (!xmlDoc || !xslDoc) {
+                            output.innerHTML = '<p style="color: #f56565; padding: 20px;">❌ Error loading XML or XSLT files</p>';
+                            return;
+                        }
+
+                        let result;
+
+                        // Use appropriate transformation method based on browser
+                        if (typeof XSLTProcessor !== 'undefined') {
+                            // Modern browsers (Firefox, Chrome, Safari, Edge)
+                            const processor = new XSLTProcessor();
+                            processor.importStylesheet(xslDoc);
+                            result = processor.transformToDocument(xmlDoc);
+                            output.innerHTML = result.documentElement.innerHTML;
+                        } else if (typeof xmlDoc.transformNode !== 'undefined') {
+                            // Internet Explorer (deprecated but kept for reference)
+                            result = xmlDoc.transformNode(xslDoc);
+                            output.innerHTML = result;
+                        } else {
+                            output.innerHTML = '<p style="color: #f56565; padding: 20px;">❌ XSLT transformation not supported in this browser</p>';
+                        }
+                    } catch (err) {
+                        output.innerHTML = '<p style="color: #f56565; padding: 20px;">❌ Error: ' + err.message + '</p>';
+                    }
+                };
+                xslRequest.onerror = function() {
+                    output.innerHTML = '<p style="color: #f56565; padding: 20px;">❌ Error loading XSLT file</p>';
+                };
+                xslRequest.open('GET', xslFile, true);
+                xslRequest.responseType = 'document';
+                xslRequest.send();
+            };
+
+            xmlRequest.onerror = function() {
+                output.innerHTML = '<p style="color: #f56565; padding: 20px;">❌ Error loading XML file</p>';
+            };
+
+            xmlRequest.open('GET', xmlFile, true);
+            xmlRequest.responseType = 'document';
+            xmlRequest.send();
+        }
+
+        // Load transformation on page load
+        window.addEventListener('load', function() {
+            transformXML();
+        });
+    </script>
+</body>
+</html>

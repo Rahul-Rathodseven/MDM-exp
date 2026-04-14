@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Page with jQuery</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 24px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
+        }
+
+        .btn-danger {
+            background: #f56565;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #e53e3e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 101, 101, 0.4);
+        }
+
+        .btn-warning {
+            background: #ecc94b;
+            color: #333;
+        }
+
+        .btn-warning:hover {
+            background: #d6bc21;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(236, 201, 75, 0.4);
+        }
+
+        .btn-info {
+            background: #4299e1;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: #3182ce;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(66, 153, 225, 0.4);
+        }
+
+        .content-box {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .hidden-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        .content-item {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .content-item.show {
+            display: block;
+        }
+
+        .info-text {
+            background: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 15px;
+            border-radius: 3px;
+            margin: 10px 0;
+            color: #2c5282;
+        }
+
+        .demo-box {
+            background: #f0f9ff;
+            border: 2px dashed #667eea;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .items-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .item {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+
+        .item.visible {
+            display: block;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 Dynamic Page with jQuery</h1>
+            <p>Button-triggered content updates with animations</p>
+        </div>
+
+        <!-- Hide/Show Section -->
+        <div class="section">
+            <h2>Hide/Show Effects</h2>
+            <div class="button-group">
+                <button class="btn-primary" onclick="$('#hideShowBox').show()">Show</button>
+                <button class="btn-danger" onclick="$('#hideShowBox').hide()">Hide</button>
+                <button class="btn-info" onclick="$('#hideShowBox').toggle()">Toggle</button>
+            </div>
+            <div class="demo-box" id="hideShowBox">
+                👋 Hidden/Visible Content Box
+            </div>
+            <div class="info-text">
+                💡 <strong>Tip:</strong> Use .show() to display elements, .hide() to conceal them, and .toggle() to switch between them instantly.
+            </div>
+        </div>
+
+        <!-- Fade Effects Section -->
+        <div class="section">
+            <h2>Fade Animations</h2>
+            <div class="button-group">
+                <button class="btn-primary" onclick="$('#fadeBox').fadeIn()">Fade In</button>
+                <button class="btn-danger" onclick="$('#fadeBox').fadeOut()">Fade Out</button>
+                <button class="btn-warning" onclick="$('#fadeBox').fadeToggle()">Fade Toggle</button>
+                <button class="btn-info" onclick="$('#fadeBox').fadeTo('slow', 0.5)">Fade to 50%</button>
+            </div>
+            <div class="demo-box" id="fadeBox" style="display: none; background: #fef5e7; border-color: #ecc94b; color: #d6bc21;">
+                ✨ Fading Content - Opacity Changes Smoothly
+            </div>
+            <div class="info-text">
+                💡 <strong>Tip:</strong> Fade effects gradually change the opacity of elements over a duration (default 400ms).
+            </div>
+        </div>
+
+        <!-- Slide Effects Section -->
+        <div class="section">
+            <h2>Slide Animations</h2>
+            <div class="button-group">
+                <button class="btn-success" onclick="$('#slideBox').slideDown()">Slide Down</button>
+                <button class="btn-danger" onclick="$('#slideBox').slideUp()">Slide Up</button>
+                <button class="btn-warning" onclick="$('#slideBox').slideToggle()">Slide Toggle</button>
+            </div>
+            <div class="demo-box" id="slideBox" style="display: none; background: #f0fdf4; border-color: #48bb78; color: #22863a;">
+                📦 Sliding Content - Animates Height Changes
+            </div>
+            <div class="info-text">
+                💡 <strong>Tip:</strong> Slide effects gradually expand or collapse elements by changing their height.
+            </div>
+        </div>
+
+        <!-- Custom Animations Section -->
+        <div class="section">
+            <h2>Custom Animations & Speed</h2>
+            <div class="button-group">
+                <button class="btn-primary" onclick="animateFast()">Fast Animation</button>
+                <button class="btn-success" onclick="animateNormal()">Normal Animation</button>
+                <button class="btn-warning" onclick="animateSlow()">Slow Animation</button>
+                <button class="btn-danger" onclick="resetAnimBox()">Reset</button>
+            </div>
+            <div class="demo-box" id="animBox" style="background: #fce4ec; border-color: #e91e63; color: #c2185b;">
+                🎨 Custom Animation Box
+            </div>
+            <div class="info-text">
+                💡 <strong>Tip:</strong> Use 'fast' (200ms), 'normal' (400ms), 'slow' (600ms), or specify custom duration in milliseconds.
+            </div>
+        </div>
+
+        <!-- Toggle Class Section -->
+        <div class="section">
+            <h2>Toggle & Text Content</h2>
+            <div class="button-group">
+                <button class="btn-primary" onclick="toggleContent()">Toggle Content</button>
+                <button class="btn-success" onclick="showItems()">Show All Items</button>
+                <button class="btn-danger" onclick="hideItems()">Hide All Items</button>
+            </div>
+            <div class="items-list">
+                <div class="item">Item 1 📱</div>
+                <div class="item">Item 2 💻</div>
+                <div class="item">Item 3 🎮</div>
+                <div class="item">Item 4 🎵</div>
+            </div>
+            <div id="toggleText" class="hidden-box" style="margin-top: 20px;">
+                Content toggled successfully! 🎉
+            </div>
+            <div class="info-text">
+                💡 <strong>Tip:</strong> Use .fadeToggle(), .slideToggle() or .toggle() to switch visibility with animation.
+            </div>
+        </div>
+
+        <!-- Chained Animations Section -->
+        <div class="section">
+            <h2>Chained Animations (Queued)</h2>
+            <div class="button-group">
+                <button class="btn-primary" onclick="chainedAnimation()">Run Chain</button>
+                <button class="btn-danger" onclick="$('#chainBox').stop()">Stop Animation</button>
+                <button class="btn-warning" onclick="$('#chainBox').clearQueue()">Clear Queue</button>
+            </div>
+            <div class="demo-box" id="chainBox" style="background: #f3e5f5; border-color: #9c27b0; color: #6a1b9a;">
+                🔗 Chained Animation Box
+            </div>
+            <div class="info-text">
+                💡 <strong>Tip:</strong> Chain multiple methods to run animations sequentially. Use .stop() to halt and .clearQueue() to clear pending animations.
+            </div>
+        </div>
+
+        <!-- Delay Section -->
+        <div class="section">
+            <h2>Delayed Animations</h2>
+            <div class="button-group">
+                <button class="btn-info" onclick="delayedAnimation()">Start Delayed Sequence</button>
+                <button class="btn-danger" onclick="$('#delayBox').hide(0)">Reset</button>
+            </div>
+            <div class="demo-box" id="delayBox" style="display: none; background: #e0f2f1; border-color: #009688; color: #00695c;">
+                ⏱️ Delayed Animation - Appears after 2 seconds
+            </div>
+            <div class="info-text">
+                💡 <strong>Tip:</strong> Use .delay() to pause between animations. Useful for creating timed sequences.
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🚀 Explore jQuery animation effects and DOM manipulation</p>
+        </div>
+    </div>
+
+    <script>
+        // Custom Animation Functions
+        function animateFast() {
+            $('#animBox').fadeOut('fast').fadeIn('fast');
+        }
+
+        function animateNormal() {
+            $('#animBox').fadeOut('normal').fadeIn('normal');
+        }
+
+        function animateSlow() {
+            $('#animBox').fadeOut('slow').fadeIn('slow');
+        }
+
+        function resetAnimBox() {
+            $('#animBox').stop().show();
+        }
+
+        // Toggle Content
+        function toggleContent() {
+            $('#toggleText').fadeToggle('slow');
+        }
+
+        // Show/Hide Items
+        function showItems() {
+            $('.item').slideDown('fast');
+        }
+
+        function hideItems() {
+            $('.item').slideUp('fast');
+        }
+
+        // Chained Animations
+        function chainedAnimation() {
+            $('#chainBox')
+                .fadeOut('slow')
+                .delay(500)
+                .fadeIn('slow')
+                .slideUp('slow')
+                .delay(500)
+                .slideDown('slow');
+        }
+
+        // Delayed Animation
+        function delayedAnimation() {
+            $('#delayBox')
+                .hide(0)
+                .delay(500)
+                .slideDown('slow')
+                .delay(1000)
+                .fadeOut('slow');
+        }
+
+        // Initialize - Show welcome message
+        $(document).ready(function() {
+            console.log('jQuery is ready! All animations are set up.');
+            $('#fadeBox').show(); // Initially visible for demo
+            $('#slideBox').show(); // Initially visible for demo
+        });
+    </script>
+</body>
+</html>
