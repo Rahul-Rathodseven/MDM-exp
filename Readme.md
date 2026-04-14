@@ -82,7 +82,7 @@ This repository contains all lab experiments covering full-stack web development
 2. Clone repo:
 
    ```
-   git clone <your-repo-link>
+   git clone https://github.com/Rahul-Rathodseven/MDM-exp
    ```
 3. Place project in `htdocs` (for PHP)
 4. Run in browser:
@@ -96,6 +96,4 @@ This repository contains all lab experiments covering full-stack web development
 ## 📌 Notes
 
 * Each experiment is organized in separate folders
-* Follow naming convention: `exp1`, `exp2`, etc.
-
 ---
