@@ -1,0 +1,6 @@
+.env
+backend/.env
+backend/mail_logs/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/

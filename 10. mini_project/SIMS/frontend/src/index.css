@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Trebuchet MS", "Segoe UI Variable", "Segoe UI", sans-serif;
+  background-color: #f4f7fb;
+  background-image:
+    radial-gradient(circle at top left, rgba(45, 127, 249, 0.18), transparent 28%),
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.12), transparent 22%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(241, 245, 249, 0.96)),
+    linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+  background-size: auto, auto, auto, 36px 36px, 36px 36px;
+  color: #0f172a;
+}
+
+.dark body {
+  background-color: #0f172a;
+  background-image:
+    radial-gradient(circle at top left, rgba(45, 127, 249, 0.2), transparent 28%),
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.12), transparent 24%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(17, 24, 39, 0.98)),
+    linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(45, 127, 249, 0.18);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.42);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@layer components {
+  .glass-panel {
+    @apply border border-white/70 bg-white/80 shadow-panel backdrop-blur-xl dark:border-slate-700/70 dark:bg-slate-900/70;
+  }
+
+  .input-control {
+    @apply w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 shadow-sm outline-none transition duration-200 placeholder:text-slate-400 focus:border-primary-400 focus:ring-4 focus:ring-primary-100 dark:border-slate-700 dark:bg-slate-950/55 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-primary-500 dark:focus:ring-primary-500/20;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-primary-600 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-primary-600/20 transition duration-200 hover:-translate-y-0.5 hover:scale-[1.01] hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-60 dark:focus:ring-primary-500/20;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:scale-[1.01] hover:border-slate-300 hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-slate-600 dark:hover:bg-slate-800 dark:focus:ring-slate-800;
+  }
+
+  .app-shell {
+    @apply mx-auto w-full max-w-[1600px];
+  }
+
+  .page-stack {
+    @apply space-y-8 xl:space-y-10;
+  }
+
+  .hero-panel {
+    @apply glass-panel overflow-hidden rounded-[2.25rem] p-8 lg:p-10 xl:p-12;
+  }
+
+  .section-title {
+    @apply text-sm font-semibold uppercase tracking-[0.3em] text-primary-600 dark:text-primary-300;
+  }
+
+  .metric-strip {
+    @apply rounded-[1.75rem] border border-slate-200/80 bg-white/70 p-5 shadow-sm dark:border-slate-700 dark:bg-slate-950/45;
+  }
+}
